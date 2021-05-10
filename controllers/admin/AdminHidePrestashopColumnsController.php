@@ -29,6 +29,21 @@ class AdminHidePrestashopColumnsController extends ModuleAdminController
 
         parent::__construct();
 
+        foreach (HidePrestashopColumns::HOOKS as $hook_name) {
+            $id_hook = hook::getIdByName($hook_name);
+            $modules_hooked = Hook::getModulesFromHook($id_hook);
+
+            if (count($modules_hooked) > 1) {
+                $modules_names = '';
+                foreach ($modules_hooked as $module_hooked) {
+                    if ($module_hooked['name'] !== 'hideprestashopcolumns') {
+                        $modules_names .= ' ' . $module_hooked['name'] .' ';
+                    }
+                }
+                $this->warnings[] = $this->trans('There is other module(s) hooked on ' . $hook_name . '.', array(), 'Modules.HidePrestashopColumn.Admin') . ' <strong>' . $modules_names . '</strong>';
+            }
+        }
+
         foreach (HidePrestashopColumns::CUSTOMER_GRID_DEFINITIONS as $definition => $trans) {
             $customerFields['DISPLAY_CUSTOMER_' . strtoupper($definition)] = [
                     'title' => $this->trans($trans, [], 'Admin.Global'),
