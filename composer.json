@@ -1,0 +1,40 @@
+{
+    "type": "prestashop-module",
+    "name": "okom3pom/hideprestashopcolumns",
+    "description": "PrestaShop module hideprestashopcolumns",
+    "homepage": "https://github.com/okom3pom/hideprestashopcolumns",
+    "license": "AFL-3.0",
+    "authors": [
+        {
+            "name": "Okom3pom",
+            "email": "contact@okom3pom.com"
+        }
+    ],
+    "config": {
+        "platform": {
+            "php": "7.2.0"
+        },
+        "preferred-install": "dist",
+        "classmap-authoritative": true,
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "prepend-autoloader": false
+    },
+    "autoload": {
+        "psr-4": {
+            "PrestaShop\\Module\\HidePrestashopColumns\\": "src/"
+        },
+        "classmap": [
+            "controllers",
+            "hideprestashopcolumns.php"
+        ]
+    },
+    "scripts": {
+        "set-license-header": [
+            "@php ./vendor/bin/header-stamp --license=\"assets/afl.txt\" --exclude=\".github,node_modules,vendor\""
+        ]
+    },
+    "require-dev": {
+        "prestashop/php-dev-tools": "^3.4"
+    }
+}
