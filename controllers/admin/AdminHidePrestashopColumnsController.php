@@ -44,6 +44,10 @@ class AdminHidePrestashopColumnsController extends ModuleAdminController
             }
         }
 
+        if ($this->warnings) {
+            $this->warnings[] = $this->trans('This can cause problems. You can put the module in the last position.', [], 'Modules.HidePrestashopColumn.Admin'); 
+        }
+
         foreach (HidePrestashopColumns::CUSTOMER_GRID_DEFINITIONS as $definition => $trans) {
             $customerFields['DISPLAY_CUSTOMER_' . strtoupper($definition)] = [
                     'title' => $this->trans($trans, [], 'Admin.Global'),
