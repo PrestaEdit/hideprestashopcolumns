@@ -37,10 +37,10 @@ class AdminHidePrestashopColumnsController extends ModuleAdminController
                 $modules_names = '';
                 foreach ($modules_hooked as $module_hooked) {
                     if ($module_hooked['name'] !== 'hideprestashopcolumns') {
-                        $modules_names .= ' ' . $module_hooked['name'] .' ';
+                        $modules_names .= ' ' . $module_hooked['name'] . ' ';
                     }
                 }
-                $this->warnings[] = $this->trans('There is other module(s) hooked on ' . $hook_name . '.', array(), 'Modules.HidePrestashopColumn.Admin') . ' <strong>' . $modules_names . '</strong>';
+                $this->warnings[] = $this->trans('There is other module(s) hooked on ' . $hook_name . '.', [], 'Modules.HidePrestashopColumn.Admin') . ' <strong>' . $modules_names . '</strong>';
             }
         }
 
