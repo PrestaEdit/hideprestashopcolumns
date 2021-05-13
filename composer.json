@@ -25,7 +25,6 @@
             "PrestaShop\\Module\\HidePrestashopColumns\\": "src/"
         },
         "classmap": [
-            "controllers",
             "hideprestashopcolumns.php"
         ]
     },

@@ -1,0 +1,5 @@
+hideprestashopcolums_form:
+  path: /hideprestashopcolums/configuration
+  methods: [GET, POST]
+  defaults:
+    _controller: 'PrestaShop\Module\HidePrestashopColumns\Controller\ConfigurationController::index'
