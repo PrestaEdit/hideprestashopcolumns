@@ -130,7 +130,6 @@ class HidePrestashopColumns extends Module
     {
         $route = SymfonyContainer::getInstance()->get('router')->generate('hideprestashopcolums_form');
         Tools::redirectAdmin($route);
-        //Tools::redirectAdmin($this->context->link->getAdminLink(static::MODULE_ADMIN_CONTROLLER));
     }
 
     /**
