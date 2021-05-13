@@ -1,6 +1,6 @@
 # Hide Prestashop Colmums
 
-Hide PrestaShop on Order and Customer controller
+Hide PrestaShop column on Order and Customer controller
 
 ## Reporting issues
 
