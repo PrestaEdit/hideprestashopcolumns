@@ -1,11 +1,43 @@
 <?php
 
-$config = new PrestaShop\CodingStandards\CsFixer\Config();
-
-$config
-    ->setUsingCache(true)
-    ->getFinder()
+$finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
-    ->exclude('vendor');
+    ->exclude('vendor')
+    ->notPath('resources')
+;
 
-return $config;
+$config = new PhpCsFixer\Config();
+$config->setRiskyAllowed(true);
+return $config->setRules([
+    '@Symfony' => true,
+    'header_comment' => [
+        'comment_type' => 'PHPDoc',
+        'header' => file_get_contents(__DIR__.'/.header_stamp.txt'),
+        'location' => 'after_open',
+        'separate' => 'bottom'
+    ],
+    'concat_space' => [
+        'spacing' => 'one'
+    ],
+    'error_suppression' => [
+        'mute_deprecation_error' => false,
+        'noise_remaining_usages' => false,
+        'noise_remaining_usages_exclude' => [],
+    ],
+    'function_to_constant' => false,
+    'method_chaining_indentation' => true,
+    'no_alias_functions' => false,
+    'no_superfluous_phpdoc_tags' => false,
+    'non_printable_character' => [
+        'use_escape_sequences_in_strings' => true,
+    ],
+    'phpdoc_align' => [
+        'align' => 'left',
+    ],
+    'phpdoc_summary' => false,
+    'protected_to_private' => false,
+    'psr4' => false,
+    'self_accessor' => false,
+])
+    ->setFinder($finder)
+    ;

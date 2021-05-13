@@ -1,22 +1,22 @@
 <?php
 /**
- * Copyright since 2007 Okom3pom
+ * Copyright since 2013 Thomas Roux
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Academic Free License 3.0 (AFL-3.0)
- * that is bundled with this package in the file LICENSE.md.
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/AFL-3.0
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
+ * https://opensource.org/licenses/MIT
  *
- * @author    Okom3pom <contact@okom3pom.com>
- * @copyright Since 2007 Okom3pom
- * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
+ * @author    Thomas Roux <contact@okom3pom.com>
+ * @copyright Since 2013 Thomas Roux
+ * @license   https://opensource.org/licenses/MIT MIT License
  */
+
+use PrestaShop\Module\HidePrestashopColumns\Controller\ConfigurationController;
 use PrestaShop\PrestaShop\Adapter\Configuration;
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -26,46 +26,6 @@ require __DIR__ . '/vendor/autoload.php';
 
 class HidePrestashopColumns extends Module
 {
-    /**
-     * List of hooks used
-     */
-    const HOOKS = [
-        'actionCustomerGridDefinitionModifier',
-        'actionOrderGridDefinitionModifier',
-    ];
-
-    /**
-     * List of Customer Definitions
-     */
-    const CUSTOMER_GRID_DEFINITIONS = [
-        'id_customer' => 'ID',
-        'social_title' => 'Social title',
-        'firstname' => 'First name',
-        'lastname' => 'Last name',
-        'email' => 'Email address',
-        'total_spend' => 'Sales',
-        'active' => 'Enabled',
-        'new_letter' => 'Newsletter',
-        'optin' => 'Partner offers',
-        'date_add' => 'Registration',
-        'connect' => 'Last visit',
-    ];
-
-    /**
-     * List of Order Definitions
-     */
-    const ORDER_GRID_DEFINITIONS = [
-        'id_order' => 'ID',
-        'reference' => 'Reference',
-        'new' => 'New client',
-        'customer' => 'Customer',
-        'total_paid_tax_incl' => 'Total',
-        'payment' => 'Payment',
-        'current_state' => 'Status',
-        'date_add' => 'Date',
-        'country_name' => 'Delivery',
-    ];
-
     /**
      * Name of ModuleAdminController used for configuration
      */
@@ -83,7 +43,7 @@ class HidePrestashopColumns extends Module
     {
         $this->name = 'hideprestashopcolumns';
         $this->tab = 'administration';
-        $this->version = '1.0.0';
+        $this->version = '1.1.0';
         $this->author = 'Okom3pom';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = [
@@ -93,8 +53,24 @@ class HidePrestashopColumns extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->trans('Hide Prestashop Columns', [], 'Modules.HidePrestashopColumn.Admin');
-        $this->description = $this->trans('Hide Prestashop Columns on order and customer', [], 'Modules.HidePrestashopColumn.Admin');
+        $tabNames = [];
+        foreach (Language::getLanguages(true) as $lang) {
+            $tabNames[$lang['locale']] = $this->trans('Hide Prestashop Columns', [], 'Modules.HidePrestashopColumns.Admin', $lang['locale']);
+        }
+
+        $this->tabs = [
+            [
+                'route_name' => 'hideprestashopcolums_form',
+                'class_name' => ConfigurationController::TAB_CLASS_NAME,
+                'visible' => true,
+                'name' => $tabNames,
+                'icon' => 'school',
+                'parent_class_name' => 'IMPROVE',
+            ],
+        ];
+
+        $this->displayName = $this->trans('Hide Prestashop Columns', [], 'Modules.Hideprestashopcolumns.Admin');
+        $this->description = $this->trans('Hide Prestashop Columns on order and customer', [], 'Modules.Hideprestashopcolumns.Admin');
 
         $this->configuration = $configuration;
     }
@@ -107,8 +83,7 @@ class HidePrestashopColumns extends Module
     public function install()
     {
         return parent::install()
-            && $this->installTabs()
-            && $this->registerHook(static::HOOKS);
+            && $this->registerHook(ConfigurationController::HOOKS);
     }
 
     /**
@@ -118,40 +93,16 @@ class HidePrestashopColumns extends Module
      */
     public function uninstall()
     {
-        foreach (static::CUSTOMER_GRID_DEFINITIONS as $hidedefinition => $value) {
-            $this->configuration->remove('DISPLAY_CUSTOMER_' . strtoupper($hidedefinition));
+        foreach (ConfigurationController::CUSTOMER_GRID_DEFINITIONS as $hidedefinition => $value) {
+            $this->configuration->remove('HIDE_CUSTOMER_' . strtoupper($hidedefinition));
         }
 
-        foreach (static::ORDER_GRID_DEFINITIONS as $hidedefinition => $value) {
-            $this->configuration->remove('DISPLAY_ORDER_' . strtoupper($hidedefinition));
+        foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $hidedefinition => $value) {
+            $this->configuration->remove('HIDE_ORDER_' . strtoupper($hidedefinition));
         }
 
         return parent::uninstall()
             && $this->uninstallTabs();
-    }
-
-    /**
-     * Install Tabs
-     *
-     * @return bool
-     */
-    public function installTabs()
-    {
-        if (Tab::getIdFromClassName(static::MODULE_ADMIN_CONTROLLER)) {
-            return true;
-        }
-
-        $tab = new Tab();
-        $tab->class_name = static::MODULE_ADMIN_CONTROLLER;
-        $tab->module = $this->name;
-        $tab->active = true;
-        $tab->id_parent = -1;
-        $tab->name = array_fill_keys(
-            Language::getIDs(false),
-            $this->displayName
-        );
-
-        return $tab->add();
     }
 
     /**
@@ -177,7 +128,9 @@ class HidePrestashopColumns extends Module
      */
     public function getContent()
     {
-        Tools::redirectAdmin($this->context->link->getAdminLink(static::MODULE_ADMIN_CONTROLLER));
+        $route = SymfonyContainer::getInstance()->get('router')->generate('hideprestashopcolums_form');
+        Tools::redirectAdmin($route);
+        //Tools::redirectAdmin($this->context->link->getAdminLink(static::MODULE_ADMIN_CONTROLLER));
     }
 
     /**
@@ -195,8 +148,8 @@ class HidePrestashopColumns extends Module
         /** @var PrestaShop\PrestaShop\Core\Grid\Definition\GridDefinitionInterface $definition */
         $definition = $params['definition'];
 
-        foreach (static::CUSTOMER_GRID_DEFINITIONS as $hidedefinition => $value) {
-            if ($this->configuration->get('DISPLAY_CUSTOMER_' . strtoupper($hidedefinition))) {
+        foreach (ConfigurationController::CUSTOMER_GRID_DEFINITIONS as $hidedefinition => $value) {
+            if ($this->configuration->get('HIDE_CUSTOMER_' . strtoupper($hidedefinition))) {
                 $definition
                     ->getColumns()
                     ->remove($hidedefinition);
@@ -222,8 +175,8 @@ class HidePrestashopColumns extends Module
         /** @var PrestaShop\PrestaShop\Core\Grid\Definition\GridDefinitionInterface $definition */
         $definition = $params['definition'];
 
-        foreach (static::ORDER_GRID_DEFINITIONS as $hidedefinition => $value) {
-            if ($this->configuration->get('DISPLAY_ORDER_' . strtoupper($hidedefinition))) {
+        foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $hidedefinition => $value) {
+            if ($this->configuration->get('HIDE_ORDER_' . strtoupper($hidedefinition))) {
                 $definition
                     ->getColumns()
                     ->remove($hidedefinition);

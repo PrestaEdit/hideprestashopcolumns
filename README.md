@@ -1,6 +1,6 @@
 # Hide Prestashop Colmums
 
-Hide PrestaShop on Orger and Customer controller
+Hide PrestaShop on Order and Customer controller
 
 ## Reporting issues
 
@@ -34,8 +34,7 @@ That's it: you have contributed to this open source project! Congratulations!
 
 ## License
 
-This module is released under the [Academic Free License 3.0][AFL-3.0] 
+This module is released under the MIT
 
 [report-issue]: https://github.com/okom3pom/hideprestashopcolumns/issues/new/choose
 [3]: https://help.github.com/articles/using-pull-requests
-[AFL-3.0]: https://opensource.org/licenses/AFL-3.0
