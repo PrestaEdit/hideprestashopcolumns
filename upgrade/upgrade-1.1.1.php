@@ -1,22 +1,19 @@
 <?php
 /**
- * Copyright since 2007 PrestaShop SA and Contributors
- * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ * Copyright since 2013 Thomas Roux
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Academic Free License 3.0 (AFL-3.0)
- * that is bundled with this package in the file LICENSE.md.
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/AFL-3.0
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
+ * https://opensource.org/licenses/MIT
  *
- * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright Since 2007 PrestaShop SA and Contributors
- * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
+ * @author    Thomas Roux <contact@okom3pom.com>
+ * @copyright Since 2013 Thomas Roux
+ * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -40,7 +37,6 @@ function upgrade_module_1_1_1($module)
         'date_add' => 'Date',
     ];
 
-
     $customerGrid = [
         'id_customer' => 'ID',
         'social_title' => 'Social title',
@@ -57,9 +53,9 @@ function upgrade_module_1_1_1($module)
 
     foreach ($customerGrid as $key => $value) {
         Configuration::deleteByName('HIDE_CUSTOMER_' . strtoupper($key));
-
     }
+
     foreach ($orderGrid as $key => $value) {
-        Configuration::deleteByName('HIDE_ORDER_' . strtoupper($key));        
+        Configuration::deleteByName('HIDE_ORDER_' . strtoupper($key));
     }
 }
