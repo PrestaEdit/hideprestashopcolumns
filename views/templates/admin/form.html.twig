@@ -17,8 +17,24 @@
 {% form_theme customerConfigurationForm 'PrestaShopBundle:Admin/TwigTemplateForm:prestashop_ui_kit.html.twig' %}
 {% block content %}
 
+  <div class="page-head-tabs" id="head_tabs">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a href="#" id="subtab-Customer" class="nav-link tab {% if app.request.get("order") != 1 %}active current{% endif %}>">
+          {{ 'Hide Customer Columns'|trans }}
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="#" id="subtab-Order" class="nav-link tab {% if app.request.get("order") == 1 %}active current{% endif %}">
+          {{ 'Hide Order Columns'|trans }}
+        </a>
+      </li>
+    </ul>
+  </div>
+
   {{ form_start(customerConfigurationForm, {attr : {class: 'form'}}) }}
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" id="customer-form" {% if app.request.get("order") == 1 %}style="display:none"{% endif %}>
       {% block hide_customer_columns %}
         <div class="col">
           <div class="card">
@@ -44,7 +60,7 @@
   {{ form_end(customerConfigurationForm) }}
 
   {{ form_start(orderForm, {attr : {class: 'form'}}) }}
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" id="order_form" {% if app.request.get("order") != 1 %}style="display:none"{% endif %}>
       {% block hide_order_columns_cache %}
         <div class="col">
           <div class="card">
@@ -68,5 +84,24 @@
       {% endblock %}
     </div>
   {{ form_end(orderForm) }}
+
+{% block javascript %}
+  {% raw %}
+  <script>
+    $( "#subtab-Order" ).click(function() {
+      $( "#order_form" ).show("slow");
+      $( "#customer-form" ).hide("slow");
+      $( "#subtab-Order" ).addClass('active current');
+      $( "#subtab-Customer" ).removeClass('active current');
+    });
+    $( "#subtab-Customer" ).click(function() {
+      $( "#order_form" ).hide("slow");
+      $( "#customer-form" ).show("slow");
+      $( "#subtab-Customer" ).addClass('active current');
+      $( "#subtab-Order" ).removeClass('active current');
+    });
+  </script>
+  {% endraw %}
 {% endblock %}
 
+{% endblock %}

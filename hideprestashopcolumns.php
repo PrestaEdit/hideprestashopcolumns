@@ -102,6 +102,8 @@ class HidePrestashopColumns extends Module
         }
 
         return parent::uninstall()
+            && $this->configuration->remove('HIDE_ORDER_COLUMNS')
+            && $this->configuration->remove('HIDE_CUSTOMER_COLUMNS')
             && $this->uninstallTabs();
     }
 
@@ -147,8 +149,10 @@ class HidePrestashopColumns extends Module
         /** @var PrestaShop\PrestaShop\Core\Grid\Definition\GridDefinitionInterface $definition */
         $definition = $params['definition'];
 
-        foreach (ConfigurationController::CUSTOMER_GRID_DEFINITIONS as $hidedefinition => $value) {
-            if ($this->configuration->get('HIDE_CUSTOMER_' . strtoupper($hidedefinition))) {
+        $configs = json_decode($this->configuration->get('HIDE_CUSTOMER_COLUMNS'), true);
+
+        foreach ($configs as $hidedefinition => $value) {
+            if (1 == $value) {
                 $definition
                     ->getColumns()
                     ->remove($hidedefinition);
@@ -174,8 +178,10 @@ class HidePrestashopColumns extends Module
         /** @var PrestaShop\PrestaShop\Core\Grid\Definition\GridDefinitionInterface $definition */
         $definition = $params['definition'];
 
-        foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $hidedefinition => $value) {
-            if ($this->configuration->get('HIDE_ORDER_' . strtoupper($hidedefinition))) {
+        $configs = json_decode($this->configuration->get('HIDE_ORDER_COLUMNS'), true);
+
+        foreach ($configs as $hidedefinition => $value) {
+            if (1 == $value) {
                 $definition
                     ->getColumns()
                     ->remove($hidedefinition);

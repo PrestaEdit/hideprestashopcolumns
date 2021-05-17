@@ -46,10 +46,14 @@ final class OrderConfigurationDataConfiguration implements DataConfigurationInte
     public function getConfiguration(): array
     {
         $return = [];
-        foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $definition => $trans) {
-            if ($configuration = $this->configuration->get('HIDE_ORDER_' . strtoupper($definition))) {
-                $return['HIDE_ORDER_' . strtoupper($definition)] = $configuration;
-            }
+        $configs = [];
+
+        if ($configuration = $this->configuration->get('HIDE_ORDER_COLUMNS')) {
+            $configs = json_decode($configuration, true);
+        }
+        
+        foreach ($configs as $key => $value ) {
+            $return['HIDE_ORDER_' . strtoupper($key)] = $value;
         }
 
         return $return;
@@ -60,11 +64,12 @@ final class OrderConfigurationDataConfiguration implements DataConfigurationInte
      */
     public function updateConfiguration(array $configuration): array
     {
+        $config = [];
         foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $definition => $trans) {
-            if (isset($configuration['HIDE_ORDER_' . strtoupper($definition)])) {
-                $this->configuration->set('HIDE_ORDER_' . strtoupper($definition), $configuration['HIDE_ORDER_' . strtoupper($definition)]);
-            }
+            $config[$definition] = $configuration['HIDE_ORDER_' . strtoupper($definition)];
         }
+
+        $this->configuration->set('HIDE_ORDER_COLUMNS', json_encode($config));
 
         return [];
     }
