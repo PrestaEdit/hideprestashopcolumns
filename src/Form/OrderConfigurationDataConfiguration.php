@@ -52,7 +52,7 @@ final class OrderConfigurationDataConfiguration implements DataConfigurationInte
             $configs = json_decode($configuration, true);
         }
 
-        foreach ($configs as $key => $value ) {
+        foreach ($configs as $key => $value) {
             $return['HIDE_ORDER_' . strtoupper($key)] = $value;
         }
 
