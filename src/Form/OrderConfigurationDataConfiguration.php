@@ -51,7 +51,7 @@ final class OrderConfigurationDataConfiguration implements DataConfigurationInte
         if ($configuration = $this->configuration->get('HIDE_ORDER_COLUMNS')) {
             $configs = json_decode($configuration, true);
         }
-        
+
         foreach ($configs as $key => $value ) {
             $return['HIDE_ORDER_' . strtoupper($key)] = $value;
         }

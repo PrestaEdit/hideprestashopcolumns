@@ -101,9 +101,10 @@ class HidePrestashopColumns extends Module
             $this->configuration->remove('HIDE_ORDER_' . strtoupper($hidedefinition));
         }
 
+        $this->configuration->remove('HIDE_ORDER_COLUMNS');
+        $this->configuration->remove('HIDE_CUSTOMER_COLUMNS');
+
         return parent::uninstall()
-            && $this->configuration->remove('HIDE_ORDER_COLUMNS')
-            && $this->configuration->remove('HIDE_CUSTOMER_COLUMNS')
             && $this->uninstallTabs();
     }
 
