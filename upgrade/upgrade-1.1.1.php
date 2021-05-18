@@ -58,4 +58,6 @@ function upgrade_module_1_1_1($module)
     foreach ($orderGrid as $key => $value) {
         Configuration::deleteByName('HIDE_ORDER_' . strtoupper($key));
     }
+
+    return true;
 }
