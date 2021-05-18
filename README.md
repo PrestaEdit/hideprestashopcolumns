@@ -2,7 +2,7 @@
 
 Hide PrestaShop column on Order and Customer controller
 
-**This module is only compatible with PrestaShop 1.7.7.X and more**
+**This module is only compatible with PrestaShop 1.7.8.X and more**
 
 ## Reporting issues
 
