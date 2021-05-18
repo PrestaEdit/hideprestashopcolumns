@@ -39,5 +39,4 @@ return $config->setRules([
     'psr4' => false,
     'self_accessor' => false,
 ])
-    ->setFinder($finder)
-    ;
+    ->setFinder($finder);

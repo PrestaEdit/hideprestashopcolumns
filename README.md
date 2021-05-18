@@ -2,8 +2,6 @@
 
 Hide PrestaShop on Order and Customer controller
 
-**This module is only compatible with PrestaShop 1.7.7.X and more**
-
 ## Reporting issues
 
 You can report issues with this module in this repository. [Click here to report an issue][report-issue]. 
@@ -36,7 +34,8 @@ That's it: you have contributed to this open source project! Congratulations!
 
 ## License
 
-This module is released under the MIT
+This module is released under the [Academic Free License 3.0][AFL-3.0] 
 
 [report-issue]: https://github.com/okom3pom/hideprestashopcolumns/issues/new/choose
 [3]: https://help.github.com/articles/using-pull-requests
+[AFL-3.0]: https://opensource.org/licenses/AFL-3.0

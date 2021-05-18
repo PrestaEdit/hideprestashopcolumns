@@ -4,8 +4,7 @@ includes:
 parameters:
 	paths:
 		# From PHPStan 0.12, paths to check are relative to the neon file
-		- ../../src/Controller
-		- ../../src/Form
+		- ../../controllers
 		- ../../hideprestashopcolumns.php
 	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:

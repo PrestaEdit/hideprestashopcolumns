@@ -3,7 +3,7 @@
     "name": "okom3pom/hideprestashopcolumns",
     "description": "PrestaShop module hideprestashopcolumns",
     "homepage": "https://github.com/okom3pom/hideprestashopcolumns",
-    "license": "MIT",
+    "license": "AFL-3.0",
     "authors": [
         {
             "name": "Okom3pom",
@@ -25,6 +25,7 @@
             "PrestaShop\\Module\\HidePrestashopColumns\\": "src/"
         },
         "classmap": [
+            "controllers",
             "hideprestashopcolumns.php"
         ]
     },

@@ -14,9 +14,7 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  */
 
-use PrestaShop\Module\HidePrestashopColumns\Controller\ConfigurationController;
 use PrestaShop\PrestaShop\Adapter\Configuration;
-use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -26,6 +24,46 @@ require __DIR__ . '/vendor/autoload.php';
 
 class HidePrestashopColumns extends Module
 {
+    /**
+     * List of hooks used
+     */
+    const HOOKS = [
+        'actionCustomerGridDefinitionModifier',
+        'actionOrderGridDefinitionModifier',
+    ];
+
+    /**
+     * List of Customer Definitions
+     */
+    const CUSTOMER_GRID_DEFINITIONS = [
+        'id_customer' => 'ID',
+        'social_title' => 'Social title',
+        'firstname' => 'First name',
+        'lastname' => 'Last name',
+        'email' => 'Email address',
+        'total_spent' => 'Sales',
+        'active' => 'Enabled',
+        'newsletter' => 'Newsletter',
+        'optin' => 'Partner offers',
+        'date_add' => 'Registration',
+        'connect' => 'Last visit',
+    ];
+
+    /**
+     * List of Order Definitions
+     */
+    const ORDER_GRID_DEFINITIONS = [
+        'id_order' => 'ID',
+        'reference' => 'Reference',
+        'new' => 'New client',
+        'customer' => 'Customer',
+        'total_paid_tax_incl' => 'Total',
+        'payment' => 'Payment',
+        'current_state' => 'Status',
+        'date_add' => 'Date',
+        'country_name' => 'Delivery',
+    ];
+
     /**
      * Name of ModuleAdminController used for configuration
      */
@@ -53,24 +91,8 @@ class HidePrestashopColumns extends Module
 
         parent::__construct();
 
-        $tabNames = [];
-        foreach (Language::getLanguages(true) as $lang) {
-            $tabNames[$lang['locale']] = $this->trans('Hide Prestashop Columns', [], 'Modules.HidePrestashopColumns.Admin', $lang['locale']);
-        }
-
-        $this->tabs = [
-            [
-                'route_name' => 'hideprestashopcolums_form',
-                'class_name' => ConfigurationController::TAB_CLASS_NAME,
-                'visible' => true,
-                'name' => $tabNames,
-                'icon' => 'school',
-                'parent_class_name' => 'IMPROVE',
-            ],
-        ];
-
-        $this->displayName = $this->trans('Hide Prestashop Columns', [], 'Modules.Hideprestashopcolumns.Admin');
-        $this->description = $this->trans('Hide Prestashop Columns on order and customer', [], 'Modules.Hideprestashopcolumns.Admin');
+        $this->displayName = $this->trans('Hide Prestashop Columns', [], 'Modules.HidePrestashopColumns.Admin');
+        $this->description = $this->trans('Hide Prestashop Columns on order and customer', [], 'Modules.HidePrestashopColumns.Admin');
 
         $this->configuration = $configuration;
     }
@@ -83,7 +105,8 @@ class HidePrestashopColumns extends Module
     public function install()
     {
         return parent::install()
-            && $this->registerHook(ConfigurationController::HOOKS);
+            && $this->installTabs()
+            && $this->registerHook(static::HOOKS);
     }
 
     /**
@@ -93,19 +116,40 @@ class HidePrestashopColumns extends Module
      */
     public function uninstall()
     {
-        foreach (ConfigurationController::CUSTOMER_GRID_DEFINITIONS as $hidedefinition => $value) {
-            $this->configuration->remove('HIDE_CUSTOMER_' . strtoupper($hidedefinition));
+        foreach (static::CUSTOMER_GRID_DEFINITIONS as $hidedefinition => $value) {
+            $this->configuration->remove('DISPLAY_CUSTOMER_' . strtoupper($hidedefinition));
         }
 
-        foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $hidedefinition => $value) {
-            $this->configuration->remove('HIDE_ORDER_' . strtoupper($hidedefinition));
+        foreach (static::ORDER_GRID_DEFINITIONS as $hidedefinition => $value) {
+            $this->configuration->remove('DISPLAY_ORDER_' . strtoupper($hidedefinition));
         }
-
-        $this->configuration->remove('HIDE_ORDER_COLUMNS');
-        $this->configuration->remove('HIDE_CUSTOMER_COLUMNS');
 
         return parent::uninstall()
             && $this->uninstallTabs();
+    }
+
+    /**
+     * Install Tabs
+     *
+     * @return bool
+     */
+    public function installTabs()
+    {
+        if (Tab::getIdFromClassName(static::MODULE_ADMIN_CONTROLLER)) {
+            return true;
+        }
+
+        $tab = new Tab();
+        $tab->class_name = static::MODULE_ADMIN_CONTROLLER;
+        $tab->module = $this->name;
+        $tab->active = true;
+        $tab->id_parent = -1;
+        $tab->name = array_fill_keys(
+            Language::getIDs(false),
+            $this->displayName
+        );
+
+        return $tab->add();
     }
 
     /**
@@ -131,8 +175,7 @@ class HidePrestashopColumns extends Module
      */
     public function getContent()
     {
-        $route = SymfonyContainer::getInstance()->get('router')->generate('hideprestashopcolums_form');
-        Tools::redirectAdmin($route);
+        Tools::redirectAdmin($this->context->link->getAdminLink(static::MODULE_ADMIN_CONTROLLER));
     }
 
     /**
@@ -150,10 +193,8 @@ class HidePrestashopColumns extends Module
         /** @var PrestaShop\PrestaShop\Core\Grid\Definition\GridDefinitionInterface $definition */
         $definition = $params['definition'];
 
-        $configs = json_decode($this->configuration->get('HIDE_CUSTOMER_COLUMNS'), true);
-
-        foreach ($configs as $hidedefinition => $value) {
-            if (1 == $value) {
+        foreach (static::CUSTOMER_GRID_DEFINITIONS as $hidedefinition => $value) {
+            if ($this->configuration->get('DISPLAY_CUSTOMER_' . strtoupper($hidedefinition))) {
                 $definition
                     ->getColumns()
                     ->remove($hidedefinition);
@@ -179,10 +220,8 @@ class HidePrestashopColumns extends Module
         /** @var PrestaShop\PrestaShop\Core\Grid\Definition\GridDefinitionInterface $definition */
         $definition = $params['definition'];
 
-        $configs = json_decode($this->configuration->get('HIDE_ORDER_COLUMNS'), true);
-
-        foreach ($configs as $hidedefinition => $value) {
-            if (1 == $value) {
+        foreach (static::ORDER_GRID_DEFINITIONS as $hidedefinition => $value) {
+            if ($this->configuration->get('DISPLAY_ORDER_' . strtoupper($hidedefinition))) {
                 $definition
                     ->getColumns()
                     ->remove($hidedefinition);
