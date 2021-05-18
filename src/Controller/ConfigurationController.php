@@ -59,9 +59,9 @@ class ConfigurationController extends FrameworkBundleAdminController
         'firstname' => 'First name',
         'lastname' => 'Last name',
         'email' => 'Email address',
-        'total_spend' => 'Sales',
+        'total_spent' => 'Sales',
         'active' => 'Enabled',
-        'new_letter' => 'Newsletter',
+        'newsletter' => 'Newsletter',
         'optin' => 'Partner offers',
         'date_add' => 'Registration',
         'connect' => 'Last visit',
@@ -117,7 +117,7 @@ class ConfigurationController extends FrameworkBundleAdminController
             if (empty($errors)) {
                 $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
 
-                return $this->redirectToRoute('hideprestashopcolums_form');
+                return $this->redirectToRoute('hideprestashopcolums_form', ['order' => 1]);
             }
 
             $this->flashErrors($errors);

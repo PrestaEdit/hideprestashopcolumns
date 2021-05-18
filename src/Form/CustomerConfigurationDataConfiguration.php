@@ -46,10 +46,14 @@ final class CustomerConfigurationDataConfiguration implements DataConfigurationI
     public function getConfiguration(): array
     {
         $return = [];
-        foreach (ConfigurationController::CUSTOMER_GRID_DEFINITIONS as $definition => $trans) {
-            if ($configuration = $this->configuration->get('HIDE_CUSTOMER_' . strtoupper($definition))) {
-                $return['HIDE_CUSTOMER_' . strtoupper($definition)] = $configuration;
-            }
+        $configs = [];
+
+        if ($configuration = $this->configuration->get('HIDE_CUSTOMER_COLUMNS')) {
+            $configs = json_decode($configuration, true);
+        }
+
+        foreach ($configs as $key => $value) {
+            $return['HIDE_CUSTOMER_' . strtoupper($key)] = $value;
         }
 
         return $return;
@@ -60,11 +64,12 @@ final class CustomerConfigurationDataConfiguration implements DataConfigurationI
      */
     public function updateConfiguration(array $configuration): array
     {
+        $config = [];
         foreach (ConfigurationController::CUSTOMER_GRID_DEFINITIONS as $definition => $trans) {
-            if (isset($configuration['HIDE_CUSTOMER_' . strtoupper($definition)])) {
-                $this->configuration->set('HIDE_CUSTOMER_' . strtoupper($definition), $configuration['HIDE_CUSTOMER_' . strtoupper($definition)]);
-            }
+            $config[$definition] = $configuration['HIDE_CUSTOMER_' . strtoupper($definition)];
         }
+
+        $this->configuration->set('HIDE_CUSTOMER_COLUMNS', json_encode($config));
 
         return [];
     }
