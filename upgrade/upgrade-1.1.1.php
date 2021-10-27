@@ -13,6 +13,7 @@
  * @copyright Since 2013 Thomas Roux
  * @license   https://opensource.org/licenses/MIT MIT License
  */
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
