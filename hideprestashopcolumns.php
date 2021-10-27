@@ -152,6 +152,10 @@ class HidePrestashopColumns extends Module
 
         $configs = json_decode($this->configuration->get('HIDE_CUSTOMER_COLUMNS'), true);
 
+        if (empty($configs)) {
+            return;
+        }
+
         foreach ($configs as $hidedefinition => $value) {
             if (1 == $value) {
                 $definition
@@ -180,6 +184,10 @@ class HidePrestashopColumns extends Module
         $definition = $params['definition'];
 
         $configs = json_decode($this->configuration->get('HIDE_ORDER_COLUMNS'), true);
+
+        if (empty($configs)) {
+            return;
+        }
 
         foreach ($configs as $hidedefinition => $value) {
             if (1 == $value) {

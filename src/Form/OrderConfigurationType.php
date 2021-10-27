@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\HidePrestashopColumns\Form;
 
-use Module;
 use PrestaShop\Module\HidePrestashopColumns\Controller\ConfigurationController;
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
@@ -31,8 +30,6 @@ class OrderConfigurationType extends TranslatorAwareType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $module = Module::getInstanceByName('hideprestashopcolumns');
-
         foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $definition => $trans) {
             $builder->add('HIDE_ORDER_' . strtoupper($definition), SwitchType::class, [
                 'label' => $this->trans($trans, 'Admin.Global'),
