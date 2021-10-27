@@ -23,7 +23,7 @@ use PrestaShop\PrestaShop\Core\Configuration\DataConfigurationInterface;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
 
 /**
- * Handles configuration data for tax options.
+ * Handles configuration data for order columns options.
  */
 final class OrderConfigurationDataConfiguration implements DataConfigurationInterface
 {
@@ -65,7 +65,8 @@ final class OrderConfigurationDataConfiguration implements DataConfigurationInte
     public function updateConfiguration(array $configuration): array
     {
         $config = [];
-        foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $definition => $trans) {
+        foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $definition) {
+            // TODO Validate Configuration Value
             $config[$definition] = $configuration['HIDE_ORDER_' . strtoupper($definition)];
         }
 
@@ -83,6 +84,7 @@ final class OrderConfigurationDataConfiguration implements DataConfigurationInte
      */
     public function validateConfiguration(array $configuration): bool
     {
+        // TODO
         return true;
     }
 }
