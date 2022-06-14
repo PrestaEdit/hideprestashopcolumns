@@ -65,7 +65,7 @@ final class OrderConfigurationDataConfiguration implements DataConfigurationInte
     public function updateConfiguration(array $configuration): array
     {
         $config = [];
-        foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $definition) {
+        foreach (ConfigurationController::ORDER_GRID_DEFINITIONS as $definition => $value) {
             // TODO Validate Configuration Value
             $config[$definition] = $configuration['HIDE_ORDER_' . strtoupper($definition)];
         }
