@@ -66,9 +66,6 @@ final class CustomerConfigurationDataConfiguration implements DataConfigurationI
     {
         $config = [];
 
-
-        //die(var_dump($configuration));
-
         foreach (ConfigurationController::CUSTOMER_GRID_DEFINITIONS as $definition => $value) {
             // TODO Validate Configuration Value
             $config[$definition] = $configuration['HIDE_CUSTOMER_' . strtoupper($definition)];
