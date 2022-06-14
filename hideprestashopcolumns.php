@@ -5,7 +5,7 @@
  * NOTICE OF LICENSE
  *
  * This source file is subject to the MIT License
- * that is bundled with this package in the file LICENSE.txt.
+ * that is bundled with this package in the file LICENSE.md.
  * It is also available through the world-wide-web at this URL:
  * https://opensource.org/licenses/MIT
  *
@@ -43,11 +43,11 @@ class HidePrestashopColumns extends Module
     {
         $this->name = 'hideprestashopcolumns';
         $this->tab = 'administration';
-        $this->version = '1.1.1';
+        $this->version = '1.1.2';
         $this->author = 'Okom3pom';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = [
-            'min' => '1.7.7.0',
+            'min' => '1.7.8.0',
             'max' => _PS_VERSION_,
         ];
 
@@ -152,6 +152,10 @@ class HidePrestashopColumns extends Module
 
         $configs = json_decode($this->configuration->get('HIDE_CUSTOMER_COLUMNS'), true);
 
+        if (empty($configs)) {
+            return;
+        }
+
         foreach ($configs as $hidedefinition => $value) {
             if (1 == $value) {
                 $definition
@@ -180,6 +184,10 @@ class HidePrestashopColumns extends Module
         $definition = $params['definition'];
 
         $configs = json_decode($this->configuration->get('HIDE_ORDER_COLUMNS'), true);
+
+        if (empty($configs)) {
+            return;
+        }
 
         foreach ($configs as $hidedefinition => $value) {
             if (1 == $value) {

@@ -5,7 +5,7 @@
  * NOTICE OF LICENSE
  *
  * This source file is subject to the MIT License
- * that is bundled with this package in the file LICENSE.txt.
+ * that is bundled with this package in the file LICENSE.md.
  * It is also available through the world-wide-web at this URL:
  * https://opensource.org/licenses/MIT
  *
@@ -71,18 +71,18 @@ class ConfigurationController extends FrameworkBundleAdminController
     {
         $warning = false;
 
-        foreach (static::HOOKS as $hook_name) {
-            $id_hook = Hook::getIdByName($hook_name);
-            $modules_hooked = Hook::getModulesFromHook($id_hook);
+        foreach (static::HOOKS as $hookName) {
+            $idHook = Hook::getIdByName($hookName);
+            $modulesHooked = Hook::getModulesFromHook($idHook);
 
-            if (count($modules_hooked) > 1) {
-                $modules_names = '';
-                foreach ($modules_hooked as $module_hooked) {
-                    if ('hideprestashopcolumns' !== $module_hooked['name']) {
-                        $modules_names .= ' ' . $module_hooked['name'] . ' ';
+            if (count($modulesHooked) > 1) {
+                $modulesName = '';
+                foreach ($modulesHooked as $moduleHooked) {
+                    if ('hideprestashopcolumns' !== $moduleHooked['name']) {
+                        $modulesName .= ' ' . $moduleHooked['name'] . ' ';
                     }
                 }
-                $warning = $this->trans('There is other module(s) hooked on ', 'Modules.HidePrestashopColumns.Admin') . ' ' . $hook_name . ' <strong>' . $modules_names . '</strong>.';
+                $warning = $this->trans('There is other module(s) hooked on ', 'Modules.HidePrestashopColumns.Admin') . ' ' . $hookName . ' <strong>' . $modulesName . '</strong>.';
                 $this->addFlash('warning', $warning);
             }
         }

@@ -1,8 +1,11 @@
 # Hide Prestashop Colmums
 
-Hide PrestaShop column on Order and Customer controller
+Hide columns on Order and Customer controller
 
 **This module is only compatible with PrestaShop 1.7.8.X and more**
+
+For prestashop 1.7.7.X use this [Version][177X].
+
 
 ## Reporting issues
 
@@ -40,3 +43,4 @@ This module is released under the MIT
 
 [report-issue]: https://github.com/okom3pom/hideprestashopcolumns/issues/new/choose
 [3]: https://help.github.com/articles/using-pull-requests
+[177X]: https://github.com/okom3pom/hideprestashopcolumns/releases/tag/v1.0.0
