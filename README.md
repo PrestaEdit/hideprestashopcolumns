@@ -6,6 +6,7 @@ Hide columns on Order and Customer controller
 
 For prestashop 1.7.7.X use this [Version][177X].
 
+
 ## Reporting issues
 
 You can report issues with this module in this repository. [Click here to report an issue][report-issue]. 
