@@ -43,7 +43,7 @@ class HidePrestashopColumns extends Module
     {
         $this->name = 'hideprestashopcolumns';
         $this->tab = 'administration';
-        $this->version = '1.1.2';
+        $this->version = '1.1.3';
         $this->author = 'Okom3pom';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = [

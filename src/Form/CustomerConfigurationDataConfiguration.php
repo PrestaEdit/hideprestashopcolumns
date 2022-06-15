@@ -65,7 +65,8 @@ final class CustomerConfigurationDataConfiguration implements DataConfigurationI
     public function updateConfiguration(array $configuration): array
     {
         $config = [];
-        foreach (ConfigurationController::CUSTOMER_GRID_DEFINITIONS as $definition) {
+
+        foreach (ConfigurationController::CUSTOMER_GRID_DEFINITIONS as $definition => $value) {
             // TODO Validate Configuration Value
             $config[$definition] = $configuration['HIDE_CUSTOMER_' . strtoupper($definition)];
         }
