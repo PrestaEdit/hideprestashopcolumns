@@ -1,4 +1,4 @@
-# Hide Prestashop Colmums
+# Hide Prestashop Columns
 
 Hide columns on Order and Customer controller
 
